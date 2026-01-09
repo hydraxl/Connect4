@@ -144,6 +144,64 @@ COLS = 7
 WIN_LENGTH = 4
 ```
 
+## Deployment to Render
+
+This application is configured for deployment on [Render](https://render.com), a free hosting platform.
+
+### Prerequisites
+1. A GitHub account
+2. Your code pushed to a GitHub repository
+3. A Render account (sign up at https://render.com)
+
+### Deployment Steps
+
+1. **Push your code to GitHub:**
+   ```bash
+   git add .
+   git commit -m "Prepare for Render deployment"
+   git push origin main
+   ```
+
+2. **Create a new Web Service on Render:**
+   - Go to https://dashboard.render.com
+   - Click "New +" and select "Web Service"
+   - Connect your GitHub account if not already connected
+   - Select your repository
+
+3. **Configure the service:**
+   - **Name:** Choose a name (e.g., "connect4-game")
+   - **Environment:** Python 3
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app`
+   - **Plan:** Free (or choose a paid plan)
+
+4. **Deploy:**
+   - Click "Create Web Service"
+   - Render will automatically build and deploy your app
+   - Your app will be available at `https://your-app-name.onrender.com`
+
+### Important Notes
+
+- **Free Tier Limitations:** 
+  - Services on the free tier spin down after 15 minutes of inactivity
+  - First request after spin-down may take 30-60 seconds
+  - 750 hours of runtime per month
+
+- **Environment Variables:**
+  - The app automatically uses the `PORT` environment variable provided by Render
+  - No additional configuration needed
+
+- **Auto-Deploy:**
+  - Render automatically redeploys when you push to your main branch
+  - You can disable this in the service settings if needed
+
+### Files for Deployment
+
+The following files are required for Render deployment:
+- `Procfile` - Tells Render how to run your app
+- `requirements.txt` - Lists all Python dependencies (including gunicorn)
+- `app.py` - Configured to use PORT environment variable
+
 ## License
 
 This project is open source and available for educational purposes.

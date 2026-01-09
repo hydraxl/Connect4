@@ -1,0 +1,23 @@
+{
+    "venvPath": "/Users/adamfreed/Desktop/AI Club Projects/Connect4",
+    "venv": "venv",
+    "pythonVersion": "3.14",
+    "executionEnvironments": [
+        {
+            "root": ".",
+            "pythonVersion": "3.14",
+            "extraPaths": [
+                "./venv/lib/python3.14/site-packages"
+            ]
+        }
+    ],
+    "include": [
+        "."
+    ],
+    "exclude": [
+        "**/venv",
+        "**/__pycache__",
+        "**/.pytest_cache"
+    ]
+}
+
