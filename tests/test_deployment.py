@@ -14,6 +14,7 @@ from unittest.mock import patch, MagicMock
 PROJECT_ROOT = Path(__file__).parent.parent
 PROCFILE_PATH = PROJECT_ROOT / 'Procfile'
 REQUIREMENTS_PATH = PROJECT_ROOT / 'requirements.txt'
+RUNTIME_PATH = PROJECT_ROOT / 'runtime.txt'
 
 
 class TestPortConfiguration:
@@ -238,6 +239,7 @@ class TestDeploymentFiles:
         files_to_check = [
             'Procfile',
             'requirements.txt',
+            'runtime.txt',
             'app.py',
         ]
         
@@ -258,4 +260,21 @@ class TestDeploymentFiles:
             with open(REQUIREMENTS_PATH, 'r') as f:
                 content = f.read().strip()
             assert len(content) > 0, "requirements.txt should not be empty"
+    
+    def test_runtime_file_exists(self):
+        """Test that runtime.txt exists."""
+        assert RUNTIME_PATH.exists(), "runtime.txt should exist for Python version specification"
+    
+    def test_runtime_file_content(self):
+        """Test that runtime.txt has valid Python version."""
+        if RUNTIME_PATH.exists():
+            with open(RUNTIME_PATH, 'r') as f:
+                content = f.read().strip()
+            
+            assert len(content) > 0, "runtime.txt should not be empty"
+            assert content.startswith('python-'), "runtime.txt should start with 'python-'"
+            # Should be a valid version format like python-3.12.7
+            import re
+            assert re.match(r'python-3\.\d+\.\d+', content), \
+                "runtime.txt should have format 'python-3.X.Y'"
 
