@@ -174,6 +174,7 @@ This application is configured for deployment on [Render](https://render.com), a
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `gunicorn app:app`
    - **Plan:** Free (or choose a paid plan)
+   - **Python Version:** Render will use the version specified in `runtime.txt` (Python 3.12.7)
 
 4. **Deploy:**
    - Click "Create Web Service"
@@ -200,7 +201,16 @@ This application is configured for deployment on [Render](https://render.com), a
 The following files are required for Render deployment:
 - `Procfile` - Tells Render how to run your app
 - `requirements.txt` - Lists all Python dependencies (including gunicorn)
+- `runtime.txt` - Specifies Python version (3.12.7 for compatibility)
 - `app.py` - Configured to use PORT environment variable
+
+### Troubleshooting
+
+If you encounter a gunicorn parsing error:
+1. Ensure `runtime.txt` specifies a stable Python version (3.11 or 3.12)
+2. Verify `Procfile` contains exactly: `web: gunicorn app:app` (no extra spaces)
+3. Check that all dependencies in `requirements.txt` are compatible with your Python version
+4. Make sure `app.py` has `app = Flask(__name__)` defined at the module level
 
 ## License
 
