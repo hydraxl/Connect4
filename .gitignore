@@ -1,6 +1,8 @@
-# OS files
-.DS_Store
-Thumbs.db
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
 
 # Python
 __pycache__/
@@ -9,11 +11,9 @@ __pycache__/
 *.so
 .Python
 
-# Virtual Environment
-venv/
-env/
-ENV/
-.venv
+# Flask
+instance/
+.webassets-cache
 
 # IDE
 .vscode/
@@ -21,4 +21,8 @@ ENV/
 *.swp
 *.swo
 *~
+
+# OS
+.DS_Store
+Thumbs.db
 
