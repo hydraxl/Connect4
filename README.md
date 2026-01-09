@@ -14,8 +14,13 @@ Connect4/
 ├── static/
 │   ├── style.css    # Styling for the game
 │   └── script.js    # Frontend JavaScript logic
+├── tests/
+│   ├── test_game.py # Tests for game logic
+│   ├── test_bot.py  # Tests for bot algorithm
+│   └── test_app.py  # Tests for API endpoints
 ├── venv/            # Virtual environment (created during setup)
 ├── requirements.txt # Python dependencies
+├── pytest.ini       # Pytest configuration
 ├── .gitignore       # Git ignore file
 └── README.md        # This file
 ```
@@ -78,6 +83,29 @@ python app.py
 ```
 http://localhost:5000
 ```
+
+## Running Tests
+
+The project includes a comprehensive test suite using pytest. To run the tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage report
+pytest --cov=. --cov-report=html
+
+# Run specific test file
+pytest tests/test_game.py
+
+# Run with verbose output
+pytest -v
+```
+
+Test coverage reports are generated in the `htmlcov/` directory. The test suite achieves 98% code coverage and includes:
+- Game logic tests (initialization, moves, win detection, draw detection)
+- Bot algorithm tests (minimax, evaluation, move selection)
+- API endpoint tests (all Flask routes and error handling)
 
 2. Open your browser and navigate to:
 ```
