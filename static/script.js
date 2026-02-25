@@ -4,6 +4,7 @@ let board = [];
 let currentPlayer = 1; // 1 = RED, 2 = YELLOW
 let gameOver = false;
 let winner = 0;
+let selectedDepth = 6;
 
 const ROWS = 6;
 const COLS = 7;
@@ -11,9 +12,15 @@ const COLS = 7;
 // Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     createBoard();
-    newGame();
     
-    document.getElementById('new-game-btn').addEventListener('click', newGame);
+    document.getElementById('start-game-btn').addEventListener('click', startGame);
+    document.getElementById('depth-select').addEventListener('change', (e) => {
+        selectedDepth = parseInt(e.target.value, 10);
+    });
+    document.getElementById('new-game-btn').addEventListener('click', () => {
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('difficulty-screen').style.display = 'block';
+    });
 });
 
 function createBoard() {
@@ -40,6 +47,13 @@ function handleCellClick(col) {
     makeMove(col);
 }
 
+function startGame() {
+    selectedDepth = parseInt(document.getElementById('depth-select').value, 10);
+    document.getElementById('difficulty-screen').style.display = 'none';
+    document.getElementById('game-screen').style.display = 'block';
+    newGame();
+}
+
 async function newGame() {
     try {
         const response = await fetch('/api/new_game', {
@@ -47,7 +61,7 @@ async function newGame() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ game_id: gameId })
+            body: JSON.stringify({ game_id: gameId, depth: selectedDepth })
         });
         
         const data = await response.json();

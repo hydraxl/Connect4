@@ -5,13 +5,12 @@ Flask web server for Connect 4 game with GUI.
 from flask import Flask, render_template, jsonify, request
 from game import Connect4, Player
 from bot import Bot
-import json
 
 app = Flask(__name__)
 
-# Store game instances in memory (in production, use a proper session store)
+# Store game instances and their bots in memory (in production, use a proper session store)
+# Each entry: game_id -> {'game': Connect4, 'bot': Bot}
 games = {}
-bot = Bot(depth=6, player=Player.YELLOW)
 
 
 @app.route('/')
@@ -22,10 +21,14 @@ def index():
 
 @app.route('/api/new_game', methods=['POST'])
 def new_game():
-    """Create a new game."""
-    game_id = request.json.get('game_id', 'default')
+    """Create a new game with optional bot depth."""
+    data = request.json or {}
+    game_id = data.get('game_id', 'default')
+    depth = data.get('depth', 6)
+    depth = max(1, min(12, int(depth)))  # Clamp to valid range
     game = Connect4()
-    games[game_id] = game
+    bot = Bot(depth=depth, player=Player.YELLOW)
+    games[game_id] = {'game': game, 'bot': bot}
     return jsonify({
         'success': True,
         'board': game.get_board(),
@@ -45,7 +48,7 @@ def make_move():
     if game_id not in games:
         return jsonify({'success': False, 'error': 'Game not found'}), 404
     
-    game = games[game_id]
+    game = games[game_id]['game']
     
     if col is None or col < 0 or col >= Connect4.COLS:
         return jsonify({'success': False, 'error': 'Invalid column'}), 400
@@ -72,13 +75,15 @@ def make_move():
 @app.route('/api/bot_move', methods=['POST'])
 def bot_move():
     """Get and make the bot's move."""
-    data = request.json
+    data = request.json or {}
     game_id = data.get('game_id', 'default')
     
     if game_id not in games:
         return jsonify({'success': False, 'error': 'Game not found'}), 404
     
-    game = games[game_id]
+    game_data = games[game_id]
+    game = game_data['game']
+    bot = game_data['bot']
     
     if game.game_over:
         return jsonify({
@@ -124,7 +129,7 @@ def get_game_state():
     if game_id not in games:
         return jsonify({'success': False, 'error': 'Game not found'}), 404
     
-    game = games[game_id]
+    game = games[game_id]['game']
     
     return jsonify({
         'success': True,

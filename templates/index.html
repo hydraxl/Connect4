@@ -8,6 +8,24 @@
 </head>
 <body>
     <div class="container">
+        <div id="difficulty-screen" class="difficulty-screen">
+            <h1>Connect 4</h1>
+            <p class="difficulty-subtitle">Choose your opponent's strength</p>
+            <div class="difficulty-form">
+                <label for="depth-select">Recursion Depth:</label>
+                <select id="depth-select" class="depth-select">
+                    <option value="2">2 - Easy</option>
+                    <option value="4">4 - Medium</option>
+                    <option value="6" selected>6 - Hard</option>
+                    <option value="8">8 - Expert</option>
+                    <option value="10">10 - Master</option>
+                </select>
+                <p class="depth-hint">Higher depth = stronger bot, slower moves</p>
+                <button id="start-game-btn" class="btn btn-primary">Start Game</button>
+            </div>
+        </div>
+        
+        <div id="game-screen" class="game-screen" style="display: none;">
         <h1>Connect 4</h1>
         
         <div class="game-info">
@@ -23,6 +41,7 @@
         
         <div class="instructions">
             <p>Click on a column to drop your piece. Get 4 in a row to win!</p>
+        </div>
         </div>
     </div>
     
